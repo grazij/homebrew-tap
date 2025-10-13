@@ -1,4 +1,4 @@
-cask "sensible-side-buttons" do
+cask "grazij-sensiblesidebuttons" do
   version "1.0.6-grazij.1"
   sha256 "6f25084bd9f7d137a1c370fefdde9eea26615ff6044310b3c323adbd7f86d70c"
 
