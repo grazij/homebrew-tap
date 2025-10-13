@@ -1,6 +1,6 @@
 cask "grazij-sensiblesidebuttons" do
   version "1.0.6-grazij.1"
-  sha256 "6f25084bd9f7d137a1c370fefdde9eea26615ff6044310b3c323adbd7f86d70c"
+  sha256 "4db1b01c5acc149d946eb8249735a6a33c7134c7d6bf6bbf4b2a927329a019f7"
 
   url "https://github.com/grazij/sensible-side-buttons/releases/download/v#{version}/SensibleSideButtons-#{version}.dmg"
   name "Sensible Side Buttons"
