@@ -19,7 +19,7 @@ class Pathmgr < Formula
   desc "Tiny C utility that turns a directory list into a PATH value"
   homepage "https://github.com/grazij/pathmgr"
   url "https://github.com/grazij/pathmgr/archive/refs/tags/v0.1.0.tar.gz"
-  sha256 "d43b4f1a449d83cd43b77213878a9e773cb41492e72b848771d1c9988ab818e4"
+  sha256 "0432207501406d6293ea937c43db0b9471a86bd051e5a962ad2697ce2a127dce"
   license "MIT"
   head "https://github.com/grazij/pathmgr.git", branch: "main"
 
