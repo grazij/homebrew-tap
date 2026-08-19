@@ -2,22 +2,16 @@
 
 ## What this repo is
 
-A third-party Homebrew tap. The content is Ruby formula files under `Formula/`
-and cask files under `Casks/` — there is no application source here. Users
-install with `brew install grazij/tap/<formula>` or
-`brew install --cask grazij/tap/<cask>`.
-
-Most formulae package software from the `grazij/*` GitHub org, so the upstream
-repo, tag and tarball checksum are all under the same owner's control.
-
-`Formula/git-credential-1password.rb` is the deliberate exception: it points at
-`ethrgeist/git-credential-1password` directly rather than at a fork. The
-trade-off is that upstream can retag and change the tarball checksum, which
-surfaces as a mismatch on the next build.
+A third-party Homebrew tap: Ruby formula files under `Formula/`, cask files
+under `Casks/`, no application source.
 
 **Formulae are authored here and nowhere else.** The projects this tap packages
-used to keep their own copy and mirror it across; three of them did it three
-different ways and none reached the tap reliably, so their copies are gone.
+no longer keep a copy of their own.
+
+`Formula/git-credential-1password.rb` is the deliberate exception to packaging
+the `grazij/*` org: it points at `ethrgeist/git-credential-1password` directly
+rather than at a fork, so upstream can retag and change the tarball checksum,
+which surfaces as a mismatch on the next build.
 
 ## Bumping a formula
 
@@ -35,26 +29,23 @@ from a previous tag of the same tree. An archive's pax global header contains
 the commit SHA, so re-tagging changes the checksum even when the tree it
 contains is byte-identical.
 
-**Changes go through a pull request, not a direct push to `main`.** `--only-formulae`
-runs on pull requests only, so a direct push never builds bottles. Casks have no
-bottles, so `--only-formulae` skips them and a direct push loses nothing there;
-`--only-tap-syntax` still lints them on every push.
-
 ## CI
+
+**Changes go through a pull request, not a direct push to `main`.**
 
 - `.github/workflows/tests.yml` — `brew test-bot` on `ubuntu-24.04`,
   `macos-15-intel` and `macos-26`. `--only-formulae` (build + bottle) on pull
-  requests; pushes to `main` get syntax only. `fail-fast: false` is deliberate:
-  Linux is expected to skip macOS-only formulae rather than block the matrix.
+  requests only; pushes to `main` get `--only-tap-syntax`. `fail-fast: false` is
+  deliberate: Linux is expected to skip macOS-only formulae rather than block
+  the matrix.
 - `.github/workflows/publish.yml` — applying the `pr-pull` label to a pull
   request runs `brew pr-pull`, which pulls the bottle artifacts from the test
   run, commits them to `main` and deletes the branch. Do not hand-edit bottle
   blocks; they land via that label.
 
 Merging with the ordinary merge button instead of the label lands the formula
-with **no bottle block**. That is what happened to `git-credential-1password`,
-and it was left that way on purpose — a 2.3 MB Go binary that builds in about a
-second does not need bottles.
+with **no bottle block**. Casks have no bottles, so a direct push loses nothing
+there.
 
 ## Working on a formula locally
 
@@ -69,20 +60,15 @@ brew tap --force grazij/tap && brew readall grazij/tap
 scripts here as well as the Ruby, and it applies Homebrew's own profiles:
 shellcheck with `require-variable-braces` on (so `$VAR` must be `${VAR}`) and
 shfmt with two-space indent and `then` on its own line. `brew style Formula/*.rb`
-passes happily while the tap as a whole fails, which is exactly how `bump.sh`
-reached `main` red.
+passes happily while the tap as a whole fails.
 
-**For shell, also run shellcheck at its strictest — the runner is ahead of you.**
+**For shell, also run shellcheck at its strictest.** The runner installs a newer
+one that enables checks yours does not, so a local `brew style` can pass while
+CI fails.
 
 ```sh
 shellcheck -s bash --enable=all bump.sh
 ```
-
-A local `brew style` can pass while CI fails, because the runner installs a
-newer shellcheck that enables checks yours does not. `SC2310` cost a second red
-build this way: a function called in an `||` condition disables `set -e` for
-everything it goes on to call. The fix is to let the function exit on its own
-rather than pairing it with `|| die`.
 
 `brew audit` and `brew livecheck` refuse a bare file path
 (`Error: Calling brew audit [path ...] is disabled`), so they run by name

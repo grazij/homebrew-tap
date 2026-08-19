@@ -9,7 +9,7 @@
 | `duti` | [FORK](https://github.com/grazij/duti): Set macOS default applications for document types and URL schemes |
 | `git-credential-1password` | [REPO](https://github.com/ethrgeist/git-credential-1password): Git credential helper that R/W credentials via the 1Password CLI |
 | `pathset` | [REPO](https://github.com/grazij/pathset): Utility that turns a directory list into a PATH value |
-| `plistwatch` | [FORK](https://github.com/grazij/plistwatch): Logs macOS defaults changes |
+| `plistwatch` | [FORK](https://github.com/grazij/plistwatch): Monitors and logs macOS defaults changes |
 
 ## Casks
 
@@ -23,7 +23,3 @@
 
 Formulae are authored here and nowhere else. See [CONTRIBUTING.md](CONTRIBUTING.md)
 for how to bump one and why it has to go through a pull request.
-
-## Documentation
-
-`brew help`, `man brew` or check [Homebrew's documentation](https://docs.brew.sh).
