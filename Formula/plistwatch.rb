@@ -1,33 +1,9 @@
-# Homebrew formula for plistwatch.
-#
-# To publish:
-#   1. Tag a release (e.g. v2025.09.24+grazij.3) and push to GitHub.
-#   2. Run `make formula VERSION=2025.09.24+grazij.3` from the project root — it
-#      bumps `url`, `version` and `sha256` here, mirrors the file to
-#      ../homebrew-tap, and pushes both repos. Users then run:
-#        brew tap grazij/tap
-#        brew install grazij/tap/plistwatch
-#
-# To compute SHA256 for the release tarball (a literal + in the path confuses
-# GitHub's redirects; %2B does not):
-#   curl -sL https://github.com/grazij/plistwatch/archive/refs/tags/v2025.09.24%2Bgrazij.3.tar.gz | shasum -a 256
-#
-# To test edits to this file before publishing: current Homebrew rejects any
-# formula outside a tap ("Homebrew requires formulae to be in a tap"), so both
-# `brew style` and `brew install` on this path fail. Work through the tapped
-# clone instead — note that is a separate checkout from ../homebrew-tap, and
-# `brew update` will reset it:
-#   cp Formula/plistwatch.rb "$(brew --repository grazij/tap)/Formula/"
-#   brew style --formula grazij/tap/plistwatch
-#   brew install --build-from-source grazij/tap/plistwatch
-#   git -C "$(brew --repository grazij/tap)" checkout -- Formula/plistwatch.rb
-
 class Plistwatch < Formula
   desc "Watch macOS defaults and print the commands that recreate each change"
   homepage "https://github.com/grazij/plistwatch"
   url "https://github.com/grazij/plistwatch/archive/refs/tags/v2025.09.24%2Bgrazij.4.tar.gz"
   version "2025.09.24+grazij.4"
-  sha256 "0fbb0d6cb82662c5214037c09cb2c838f7efbe2d83efe998fe14854e62546dce"
+  sha256 "5a3eff06da4934b07d450dc5f2c376591baefc076482e1090a2c2b0028269ec0"
   license "MIT"
   head "https://github.com/grazij/plistwatch.git", branch: "main"
 
