@@ -86,10 +86,14 @@ Options:
   -v, --verbose   Print extra diagnostics to stderr.
   -h, --help      Show this help.
 
+The branch is cut from whatever is checked out, so the working tree must be
+clean and the current branch level with its counterpart on origin.
+
 Exit status:
   0  success, or the formula was already at VERSION
   1  usage error, a missing dependency, or the tarball could not be fetched
   3  aborted at the confirmation prompt
+  4  dirty working tree, detached HEAD, or a branch not level with origin
 
 Examples:
   # See what would change
@@ -191,12 +195,45 @@ confirm_or_die() {
   esac
 }
 
+# The branch is cut from whatever is checked out, so anything already in the
+# tree rides along in the bump commit, and a stale base produces a pull request
+# test-bot builds against the wrong tree. Both are cheaper to refuse than to
+# unpick once the PR is open. Like confirm_or_die, this exits rather than
+# returning a status — see the note there (SC2310).
+require_clean_current_checkout() {
+  git rev-parse --is-inside-work-tree >/dev/null 2>&1 ||
+    die 4 "not inside a git working tree"
+
+  local dirty
+  dirty="$(git status --porcelain)"
+  [[ -z "${dirty}" ]] || die 4 "working tree is not clean; commit or stash first"
+
+  local branch
+  branch="$(git symbolic-ref --quiet --short HEAD)" ||
+    die 4 "HEAD is detached; check out the branch you mean to bump from"
+
+  git fetch --quiet origin "${branch}" ||
+    die 4 "cannot reach origin to check ${branch} is current"
+
+  local head_sha remote_sha
+  head_sha="$(git rev-parse HEAD)"
+  remote_sha="$(git rev-parse FETCH_HEAD)"
+  [[ "${head_sha}" == "${remote_sha}" ]] ||
+    die 4 "${branch} is not level with origin/${branch}; pull or push first"
+
+  vlog "bumping from ${branch} at ${head_sha}"
+}
+
 # --- Main ---------------------------------------------------------------
 
 need curl
 need git
 need shasum
 [[ "${OPEN_PR}" == false ]] || need gh
+
+# Checked even under --dry-run: a dry run that reports a clean bump while the
+# real one would refuse is worse than no dry run.
+require_clean_current_checkout
 
 # The owner and repo come from the formula rather than a table here, so a
 # formula pointing at somebody else's project needs no special case.
