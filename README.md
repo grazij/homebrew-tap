@@ -19,6 +19,28 @@
 | --- | --- |
 | `sensible-side-buttons` | [FORK](https://github.com/grazij/sensible-side-buttons): Adds support for side mouse buttons navigation (macOS 11+) |
 
+## External commands
+
+`brew caveats <formula|cask>...`
+
+Homebrew refuses to load an external command from a tap you have not trusted, so
+this one needs a `brew trust` as well as the tap:
+
+```sh
+brew tap grazij/tap
+brew trust grazij/tap
+```
+
+| Command | Description |
+| --- | --- |
+| `caveats` | [UPSTREAM](https://github.com/rafaelgarrido/homebrew-caveats): Print the caveats of formulae and casks without installing them |
+
+`caveats` is vendored from [rafaelgarrido/homebrew-caveats][caveats-upstream] by
+Rafael Garrido, MIT licensed. Only formatting was changed; the copyright and
+permission notice are kept in `cmd/caveats.rb`.
+
+[caveats-upstream]: https://github.com/rafaelgarrido/homebrew-caveats
+
 ## Contributing
 
 Formulae are authored here and nowhere else. See [CONTRIBUTING.md](CONTRIBUTING.md)
