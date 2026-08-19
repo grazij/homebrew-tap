@@ -59,11 +59,18 @@ second does not need bottles.
 ## Working on a formula locally
 
 ```sh
-brew style --fix Formula/<name>.rb
-brew test-bot --only-tap-syntax          # what CI runs for lint
-brew test <name>                         # run the formula's `test do` block
+brew style --fix grazij/tap               # the whole tap, which is what CI checks
+brew test-bot --only-tap-syntax           # what CI actually runs
+brew test <name>                          # run the formula's `test do` block
 brew tap --force grazij/tap && brew readall grazij/tap
 ```
+
+**Lint the tap, not a list of files.** `brew style grazij/tap` covers the shell
+scripts here as well as the Ruby, and it applies Homebrew's own profiles:
+shellcheck with `require-variable-braces` on (so `$VAR` must be `${VAR}`) and
+shfmt with two-space indent and `then` on its own line. `brew style Formula/*.rb`
+passes happily while the tap as a whole fails, which is exactly how `bump.sh`
+reached `main` red.
 
 `brew audit` and `brew livecheck` refuse a bare file path
 (`Error: Calling brew audit [path ...] is disabled`), so they run by name
