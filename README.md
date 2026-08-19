@@ -19,6 +19,25 @@
 | --- | --- |
 | `sensible-side-buttons` | [FORK](https://github.com/grazij/sensible-side-buttons): Makes side mouse buttons perform swipe gestures for navigation (macOS 11+) |
 
+## Troubleshooting
+
+If `brew update` fails on this tap — `could not apply …`, a rebase it cannot
+finish, or a complaint about unrelated histories — your clone predates a history
+rewrite here. Reset it to match:
+
+```sh
+TAP="$(brew --repository grazij/tap)"
+git -C "$TAP" rebase --abort 2>/dev/null || true
+git -C "$TAP" fetch --prune origin
+git -C "$TAP" reset --hard origin/main
+brew update
+```
+
+Nothing you have installed is affected and no reinstall is needed.
+
+Do **not** run `brew untap grazij/tap` to fix this. Untapping discards the clone
+outright, and anything you have committed there locally goes with it.
+
 ## Contributing
 
 Formulae are authored here and nowhere else. See [CONTRIBUTING.md](CONTRIBUTING.md)
