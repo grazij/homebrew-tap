@@ -72,6 +72,18 @@ shfmt with two-space indent and `then` on its own line. `brew style Formula/*.rb
 passes happily while the tap as a whole fails, which is exactly how `bump.sh`
 reached `main` red.
 
+**For shell, also run shellcheck at its strictest — the runner is ahead of you.**
+
+```sh
+shellcheck -s bash --enable=all bump.sh
+```
+
+A local `brew style` can pass while CI fails, because the runner installs a
+newer shellcheck that enables checks yours does not. `SC2310` cost a second red
+build this way: a function called in an `||` condition disables `set -e` for
+everything it goes on to call. The fix is to let the function exit on its own
+rather than pairing it with `|| die`.
+
 `brew audit` and `brew livecheck` refuse a bare file path
 (`Error: Calling brew audit [path ...] is disabled`), so they run by name
 against the tapped clone:

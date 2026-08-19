@@ -173,17 +173,21 @@ run() {
   "$@"
 }
 
-confirm() {
+# Ask before doing something irreversible, and stop here if the answer is no.
+# It exits rather than returning a status because the only caller wanted
+# exactly that, and a function invoked in an `||` condition silently disables
+# set -e for everything it calls — which this tap's CI rejects (SC2310).
+confirm_or_die() {
   [[ "${ASSUME_YES}" == true ]] && return 0
   [[ "${DRY_RUN}" == true ]] && return 0
   [[ -t 0 ]] || die 3 "$1 — no terminal to ask on; pass -y to proceed"
 
   local reply
   printf '%s%s%s [y/N] ' "${BOLD}" "$1" "${RESET}"
-  read -r reply || return 1
+  read -r reply || die 3 "aborted"
   case "${reply}" in
     [yY] | [yY][eE][sS]) return 0 ;;
-    *) return 1 ;;
+    *) die 3 "aborted" ;;
   esac
 }
 
@@ -255,7 +259,7 @@ fi
 diff -u "${FORMULA_FILE}" "${new}" || true
 
 branch="bump-${FORMULA}-${VERSION}"
-confirm "Commit ${FORMULA_FILE} on ${branch} and open a PR?" || die 3 "aborted"
+confirm_or_die "Commit ${FORMULA_FILE} on ${branch} and open a PR?"
 
 if [[ "${DRY_RUN}" == false ]]
 then
