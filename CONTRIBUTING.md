@@ -24,6 +24,10 @@ checksum does not exist before then. `bump.sh` downloads what GitHub serves,
 checks it really is an archive, rewrites `url` / `version` / `sha256`, and opens
 a pull request.
 
+The bump commit is cut from whatever is checked out, so `bump.sh` refuses a
+dirty tree or a branch not level with `origin` rather than carry either into the
+pull request.
+
 Never compute the checksum from a local `git archive`, and never carry one over
 from a previous tag of the same tree. An archive's pax global header contains
 the commit SHA, so re-tagging changes the checksum even when the tree it
