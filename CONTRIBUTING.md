@@ -13,6 +13,10 @@ sync.
 An external command is only loaded from a tap the user has run `brew trust` on,
 and trust is granted per tap, not per command.
 
+A new command under `cmd/` needs a row in the README's table and a section in
+[COMMANDS.md](COMMANDS.md). The README indexes what the tap ships; usage goes
+in COMMANDS.md.
+
 **Formulae are authored here and nowhere else.** The projects this tap packages
 no longer keep a copy of their own.
 
