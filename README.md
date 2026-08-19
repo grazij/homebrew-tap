@@ -21,7 +21,7 @@
 
 ## External commands
 
-`brew caveats <formula|cask>...`
+`brew caveats [--all] [<formula>|<cask> ...]`
 
 Homebrew refuses to load an external command from a tap you have not trusted, so
 this one needs a `brew trust` as well as the tap:
@@ -35,9 +35,22 @@ brew trust grazij/tap
 | --- | --- |
 | `caveats` | [UPSTREAM](https://github.com/rafaelgarrido/homebrew-caveats): Print the caveats of formulae and casks without installing them |
 
+Name a formula or cask to describe it. Name nothing and it describes everything
+installed — every cask, and every formula you asked for by name. Formulae that
+arrived only as another formula's dependency are skipped, because a caveat about
+linking `readline` is not one you can act on; `--all` includes them:
+
+```sh
+brew caveats            # everything you installed on purpose
+brew caveats --all      # plus the formulae pulled in as dependencies
+brew caveats --casks    # casks only; --formulae for the other half
+brew caveats readline   # a named argument is never skipped
+```
+
 `caveats` is vendored from [rafaelgarrido/homebrew-caveats][caveats-upstream] by
-Rafael Garrido, MIT licensed. Only formatting was changed; the copyright and
-permission notice are kept in `cmd/caveats.rb`.
+Rafael Garrido, MIT licensed. The copyright and permission notice are kept in
+`cmd/caveats.rb`, which also records where this copy diverges: formatting, two
+output fixes, and the no-argument default described above.
 
 [caveats-upstream]: https://github.com/rafaelgarrido/homebrew-caveats
 
