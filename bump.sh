@@ -234,21 +234,33 @@ log "${FORMULA} ${VERSION}"
 log "  url    ${url}"
 log "  sha256 ${sha256}"
 
+# Anchored to exactly two spaces so only the formula's own stanza is touched.
+# A `resource` or `on_macos` block nests its `url` / `sha256` one level deeper,
+# and an indentation-blind match would rewrite those to this tarball's values —
+# silently, since the greps below only confirm the new values landed.
+# `brew style` enforces the two-space body indent, so the anchor cannot drift.
+#
 # `version` is only rewritten where the formula already declares one. It is
 # there to correct Version.detect on a +grazij.N tag; adding one to a formula
 # that parses its version fine would be noise.
 new="${WORKDIR}/formula.rb"
-sed -e "s|^\([[:space:]]*\)url \".*\"|\1url \"${url}\"|" \
-  -e "s|^\([[:space:]]*\)version \".*\"|\1version \"${VERSION}\"|" \
-  -e "s|^\([[:space:]]*\)sha256 \".*\"|\1sha256 \"${sha256}\"|" \
+sed -e "s|^  url \".*\"|  url \"${url}\"|" \
+  -e "s|^  version \".*\"|  version \"${VERSION}\"|" \
+  -e "s|^  sha256 \".*\"|  sha256 \"${sha256}\"|" \
   "${FORMULA_FILE}" >"${new}"
 
-grep -q "url \"${url}\"" "${new}" || die 1 "url line not rewritten in ${FORMULA_FILE}"
-grep -q "sha256 \"${sha256}\"" "${new}" || die 1 "sha256 line not rewritten in ${FORMULA_FILE}"
-if grep -q '^[[:space:]]*version "' "${FORMULA_FILE}"
+grep -q "^  url \"${url}\"" "${new}" || die 1 "url line not rewritten in ${FORMULA_FILE}"
+grep -q "^  sha256 \"${sha256}\"" "${new}" || die 1 "sha256 line not rewritten in ${FORMULA_FILE}"
+if grep -q '^  version "' "${FORMULA_FILE}"
 then
-  grep -q "version \"${VERSION}\"" "${new}" || die 1 "version line not rewritten in ${FORMULA_FILE}"
+  grep -q "^  version \"${VERSION}\"" "${new}" || die 1 "version line not rewritten in ${FORMULA_FILE}"
 fi
+
+# Nothing but those three lines may differ. A formula that indents its stanza
+# differently, or that carries a second url/sha256 at the same depth, lands here
+# rather than in a pull request.
+changed="$(diff "${FORMULA_FILE}" "${new}" | grep -c '^[<>]' || true)"
+[[ "${changed}" -le 6 ]] || die 1 "unexpected rewrite in ${FORMULA_FILE}: ${changed} changed lines"
 
 if cmp -s "${new}" "${FORMULA_FILE}"
 then
