@@ -4,8 +4,13 @@
 # `brew caveats` — print the caveats of formulae and casks without installing.
 #
 # Vendored from https://github.com/rafaelgarrido/homebrew-caveats at
-# commit a495abced8373e1051e037d726359c2c1518b2e6. Only formatting was
-# changed, to satisfy `brew style` in this tap.
+# commit a495abced8373e1051e037d726359c2c1518b2e6. Changed from upstream:
+# formatting, to satisfy `brew style` in this tap; and output gating, so that
+# a name with nothing to say prints nothing at all. Upstream emits a blank
+# line per named argument rather than per printed block, and prints a bare
+# `==> name: Caveats` header for a formula whose only caveats are shell
+# completions, because `Caveats#empty?` counts those but `#to_s` omits them.
+# Gating on the rendered string is what `brew info` itself does.
 #
 # SPDX-License-Identifier: MIT
 #
@@ -56,14 +61,22 @@ module Homebrew
 
       sig { override.void }
       def run
-        args.named.to_formulae_and_casks_and_unavailable.each_with_index do |obj, i|
-          puts unless i.zero?
+        printed = false
 
+        args.named.to_formulae_and_casks_and_unavailable.each do |obj|
           case obj
           when Formula
-            puts_formula_caveats(obj)
+            caveats = Caveats.new(obj).to_s.presence
+            next if caveats.nil?
+
+            puts_caveats(obj.full_name, caveats, separate: printed)
+            printed = true
           when Cask::Cask
-            puts_cask_caveats(obj)
+            caveats = obj.caveats.to_s.presence
+            next if caveats.nil?
+
+            puts_caveats(obj.to_s, caveats, separate: printed)
+            printed = true
           when FormulaOrCaskUnavailableError
             # The formula/cask could not be found
             ofail obj.message
@@ -77,19 +90,11 @@ module Homebrew
         end
       end
 
-      def puts_formula_caveats(formula)
-        caveats = Caveats.new(formula)
-        return if caveats.empty?
-
-        ohai "#{formula.full_name}: Caveats", caveats.to_s
-        puts
-      end
-
-      def puts_cask_caveats(cask)
-        return if cask.caveats.empty?
-
-        ohai "#{cask}: Caveats", cask.caveats
-        puts
+      # Print one caveats block, preceded by a blank line only when an earlier
+      # block was printed.
+      def puts_caveats(name, caveats, separate:)
+        puts if separate
+        ohai "#{name}: Caveats", caveats
       end
     end
   end
