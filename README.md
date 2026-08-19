@@ -17,7 +17,7 @@
 
 | Cask | Description |
 | --- | --- |
-| `sensible-side-buttons` | [FORK](https://github.com/grazij/sensible-side-buttons): Makes side mouse buttons perform swipe gestures for navigation (macOS 11+) |
+| `sensible-side-buttons` | [FORK](https://github.com/grazij/sensible-side-buttons): Adds support for side mouse buttons navigation (macOS 11+) |
 
 ## Contributing
 
