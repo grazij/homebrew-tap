@@ -1,9 +1,9 @@
 class Duti < Formula
   desc "Set default applications for document types and URL schemes on macOS"
   homepage "https://github.com/grazij/duti"
-  url "https://github.com/grazij/duti/archive/refs/tags/v1.5.5%2Bgrazij.6.tar.gz"
-  version "1.5.5+grazij.6"
-  sha256 "8bb2591844a02abd48b56d3b4a988ce0c8368755a2a781d6872582103ae9fb32"
+  url "https://github.com/grazij/duti/archive/refs/tags/v1.5.5%2Bgrazij.7.tar.gz"
+  version "1.5.5+grazij.7"
+  sha256 "88c6ddf5814e3fcc66d379d73d2d577578e748fe5381f1514ce7ebb8b1eaca11"
   license :public_domain
 
   # Version.detect reads a "+grazij.N" tarball name as "1", so `version` above
