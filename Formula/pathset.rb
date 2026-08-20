@@ -1,8 +1,8 @@
 class Pathset < Formula
   desc "Tiny C utility that turns a directory list into a PATH value"
   homepage "https://github.com/grazij/pathset"
-  url "https://github.com/grazij/pathset/archive/refs/tags/v0.6.0.tar.gz"
-  sha256 "32db69579425f06a2b9b0599e17449a7209f68c351e8cac76f66293c66da3229"
+  url "https://github.com/grazij/pathset/archive/refs/tags/v0.7.0.tar.gz"
+  sha256 "52bf8b43751588925db8a99e79b31b5a76624a6429cb40007555c9bb689fcbb9"
   license "MIT"
   head "https://github.com/grazij/pathset.git", branch: "main"
 
@@ -17,11 +17,11 @@ class Pathset < Formula
   end
 
   test do
-    # These assertions are the contract 0.5.0 and 0.6.0 settled: a plain entry
-    # is always emitted, `?` is the checked form, only a failed expansion
-    # counts as a skip, and -s joins with a space. -f replaced -c and -k in
-    # 0.6.0; a config given as a path must contain a '/', which testpath
-    # always does.
+    # These assertions are the contract 0.5.0 through 0.7.0 settled: a plain
+    # entry is always emitted, `?` is the checked form, only a failed
+    # expansion counts as a skip, -s joins with a space, and duplicates are
+    # always dropped. -f replaced -c and -k in 0.6.0; a config given as a path
+    # must contain a '/', which testpath always does.
 
     # A plain entry is emitted whatever the directory check says. Dropping a
     # live entry would rewrite the order the config declared; emitting a dead
@@ -49,11 +49,23 @@ class Pathset < Formula
     # shell array. Two entries are enough to pin the separator; the matching
     # ':'-becomes-representable half is covered by the upstream suite, not
     # here, because a ':' in a directory name is not portable enough to build
-    # an install-time test on.
+    # an install-time test on. The two must be *distinct* directories since
+    # 0.7.0 — repeating one collapses it and pins nothing.
+    (testpath/"sub").mkpath
     cfg = testpath/"space"
-    cfg.write "#{testpath}\n#{testpath}\n"
-    assert_equal "#{testpath} #{testpath}",
+    cfg.write "#{testpath}\n#{testpath}/sub\n"
+    assert_equal "#{testpath} #{testpath}/sub",
                  shell_output("#{bin}/pathset -f #{cfg} -s -q").strip
+
+    # 0.7.0 dropped -d and made dedup unconditional. A trailing slash does not
+    # make an entry distinct, and the flag is a usage error now rather than a
+    # silent no-op, so an rc file still passing it fails loudly.
+    cfg = testpath/"dupes"
+    cfg.write "#{testpath}\n#{testpath}/\n"
+    assert_equal testpath.to_s,
+                 shell_output("#{bin}/pathset -f #{cfg} -q").strip
+    assert_match "unknown argument: -d",
+                 shell_output("#{bin}/pathset -f #{cfg} -q -d 2>&1", 2)
 
     assert_match version.to_s, shell_output("#{bin}/pathset -V")
   end
