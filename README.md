@@ -1,6 +1,6 @@
 # Homebrew Tap
 
-A third-party Homebrew tap: formulae, casks, and a `brew` command.
+A third-party Homebrew tap: formulae and casks.
 
 ## Install
 
@@ -26,11 +26,9 @@ brew trust grazij/tap
 
 ## Commands
 
-| Command | Description | Source |
-| --- | --- | --- |
-| `caveats` | Print the caveats of formulae or casks | [VENDORED](https://github.com/rafaelgarrido/homebrew-caveats) |
-
-[COMMANDS.md](COMMANDS.md) covers how to run them.
+External `brew` commands moved out of this tap. They live in
+[grazij/homebrew-extras](https://github.com/grazij/homebrew-extras), tapped as
+`grazij/extras`.
 
 ## Contributing
 
@@ -40,8 +38,3 @@ for how to bump one and why it has to go through a pull request.
 ## License
 
 MIT — see [LICENSE.md](LICENSE.md).
-
-`cmd/caveats.rb` is vendored from
-[rafaelgarrido/homebrew-caveats](https://github.com/rafaelgarrido/homebrew-caveats)
-by Rafael Garrido, MIT licensed. Its copyright and permission notice are kept in
-the file.
