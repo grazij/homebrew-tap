@@ -17,7 +17,7 @@ brew trust grazij/tap
 | `git-credential-1password` | Git credential helper that R/W credentials via the 1Password CLI | [REPO](https://github.com/ethrgeist/git-credential-1password) |
 | `pathset` | Utility that turns a directory list into a PATH value | [REPO](https://github.com/grazij/pathset) |
 | `plistwatch` | Monitors and logs macOS defaults changes | [FORK](https://github.com/grazij/plistwatch) |
-| `sensible-side-buttons` | App: Adds side mouse buttons navigation (macOS 11+) | [FORK](https://github.com/grazij/sensible-side-buttons) |
+| `sensible-side-buttons` | App: Adds side mouse button navigation (macOS 11+) | [FORK](https://github.com/grazij/sensible-side-buttons) |
 
 ## Contributing
 
