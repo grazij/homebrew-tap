@@ -2,20 +2,13 @@
 
 ## What this repo is
 
-A third-party Homebrew tap: Ruby formula files under `Formula/`, cask files
-under `Casks/`, and external commands under `cmd/`. No application source, with
-one exception — `cmd/caveats.rb` is vendored from
-[rafaelgarrido/homebrew-caveats](https://github.com/rafaelgarrido/homebrew-caveats)
-(MIT, © 2021 Rafael Garrido) and carries its licence notice in the file. Take a
-fix upstream first; a change made only here has to be re-applied on the next
-sync.
+A third-party Homebrew tap: Ruby formula files under `Formula/` and cask files
+under `Casks/`. No application source.
 
-An external command is only loaded from a tap the user has run `brew trust` on,
-and trust is granted per tap, not per command.
-
-A new command under `cmd/` needs a row in the README's table and a section in
-[COMMANDS.md](COMMANDS.md). The README indexes what the tap ships; usage goes
-in COMMANDS.md.
+External `brew` commands are not packaged here. They live in
+[grazij/homebrew-extras](https://github.com/grazij/homebrew-extras), which is
+tapped and trusted separately — a `cmd/` directory added back to this repo would
+collide with that tap rather than extend it.
 
 **Formulae are authored here and nowhere else.** The projects this tap packages
 no longer keep a copy of their own.
