@@ -1,5 +1,5 @@
 cask "sensible-side-buttons" do
-  # Tags use a `-grazij.N` suffix, which Version.detect misparses; declare it
+  # Tags use a `+grazij.N` suffix, which Version.detect misparses; declare it
   # explicitly and pin the livecheck regex to match.
   version "1.0.6+grazij.2"
   sha256 "85f8359248b855fd8264d60c44946fd7a9d84ccce8e23f8158855464e39633b8"
@@ -12,7 +12,7 @@ cask "sensible-side-buttons" do
   livecheck do
     url :url
     strategy :github_latest
-    regex(/^v?(\d+(?:\.\d+)+-grazij\.\d+)$/i)
+    regex(/^v?(\d+(?:\.\d+)+\+grazij\.\d+)$/i)
   end
 
   auto_updates false
