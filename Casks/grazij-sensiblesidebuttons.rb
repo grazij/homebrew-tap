@@ -1,4 +1,4 @@
-cask "sensible-side-buttons" do
+cask "grazij-sensiblesidebuttons" do
   # Tags use a `+grazij.N` suffix, which Version.detect misparses; declare it
   # explicitly and pin the livecheck regex to match.
   version "1.0.6+grazij.2"
