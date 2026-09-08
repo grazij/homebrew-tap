@@ -1,4 +1,4 @@
-class Plistwatch < Formula
+class GrazijPlistwatch < Formula
   desc "Watch macOS defaults and print the commands that recreate each change"
   homepage "https://github.com/grazij/plistwatch"
   url "https://github.com/grazij/plistwatch/archive/refs/tags/v2025.09.24%2Bgrazij.4.tar.gz"
@@ -20,8 +20,10 @@ class Plistwatch < Formula
 
   def install
     # std_go_args already adds `-s -w` itself (and drops them for
-    # --debug-symbols builds), so don't pass them again.
-    system "go", "build", *std_go_args
+    # --debug-symbols builds), so don't pass them again. `output` is explicit
+    # because it otherwise defaults to the formula name, which would install
+    # the binary as grazij-plistwatch.
+    system "go", "build", *std_go_args(output: bin/"plistwatch")
   end
 
   test do
