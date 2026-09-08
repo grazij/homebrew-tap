@@ -21,7 +21,7 @@ which surfaces as a mismatch on the next build.
 ## Bumping a formula
 
 ```sh
-./bump.sh duti 1.5.5+grazij.6      # --dry-run first if you want to see it
+./bump.sh grazij-duti 1.5.5+grazij.6      # --dry-run first if you want to see it
 ```
 
 The tag must already be pushed — GitHub generates the tarball on demand, so its
@@ -105,7 +105,7 @@ file.
 - A tag with a `+grazij.N` suffix (`v1.5.5+grazij.6`) is misparsed by Homebrew's
   `Version.detect` as `1`, so the formula must declare `version` explicitly
   **and** carry a `livecheck` block with a matching regex. Both are needed; one
-  alone does not work. See `Formula/duti.rb`.
+  alone does not work. See `Formula/grazij-duti.rb`.
 - Go formulae: `system "go", "build", *std_go_args` on its own — `std_go_args`
   already supplies `-s -w`, and repeating them breaks `--debug-symbols` builds.
   Where the tool derives its own version from `debug.ReadBuildInfo` (which

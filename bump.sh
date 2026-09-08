@@ -76,7 +76,7 @@ tarball on demand, so its checksum does not exist before then.
 Casks are not handled; their url and version interpolate differently.
 
 Positional arguments:
-  FORMULA         Formula name, without the .rb — e.g. duti
+  FORMULA         Formula name, without the .rb — e.g. grazij-duti
   VERSION         Version the tag names, without the leading v
 
 Options:
@@ -97,10 +97,10 @@ Exit status:
 
 Examples:
   # See what would change
-  ${PROG} --dry-run duti 1.5.5+grazij.6
+  ${PROG} --dry-run grazij-duti 1.5.5+grazij.6
 
   # Bump and open the PR, then apply the pr-pull label to land it
-  ${PROG} duti 1.5.5+grazij.6
+  ${PROG} grazij-duti 1.5.5+grazij.6
 EOF
 }
 

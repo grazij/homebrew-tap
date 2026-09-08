@@ -1,4 +1,4 @@
-class Duti < Formula
+class GrazijDuti < Formula
   desc "Set default applications for document types and URL schemes on macOS"
   homepage "https://github.com/grazij/duti"
   url "https://github.com/grazij/duti/archive/refs/tags/v1.5.5%2Bgrazij.7.tar.gz"
@@ -12,12 +12,6 @@ class Duti < Formula
     url :stable
     strategy :github_latest
     regex(/v?(\d+(?:\.\d+)+\+grazij\.\d+)/i)
-  end
-
-  bottle do
-    root_url "https://github.com/grazij/homebrew-tap/releases/download/duti-1.5.5+grazij.7"
-    sha256 cellar: :any_skip_relocation, arm64_tahoe: "057bb95cf9f4943eb46e7ba63b0642fe0a7b375151a15c8075a856719581c5c4"
-    sha256 cellar: :any_skip_relocation, sequoia:     "75702d5319013c4985ba223073c6e1845b2bd0ff6eec88dc1257277f7ac02630"
   end
 
   # the tag tarball ships configure.ac, not configure
