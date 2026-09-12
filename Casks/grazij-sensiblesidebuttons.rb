@@ -1,8 +1,8 @@
 cask "grazij-sensiblesidebuttons" do
   # Tags use a `+grazij.N` suffix, which Version.detect misparses; declare it
   # explicitly and pin the livecheck regex to match.
-  version "1.0.6+grazij.3"
-  sha256 "3dcb0f5c1373f271ef0dea391fbc69a1b084186339898c89e869c8bb02303bd3"
+  version "1.0.6+grazij.4"
+  sha256 "6552e59f0e3a1227b1ac72ae8ca255374821d23158dfc8fd394a8849418cbcce"
 
   url "https://github.com/grazij/sensible-side-buttons/releases/download/v#{version}/SensibleSideButtons-#{version}.dmg"
   name "Sensible Side Buttons"
