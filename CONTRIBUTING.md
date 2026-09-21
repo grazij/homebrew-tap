@@ -119,9 +119,14 @@ file.
 ## Cask conventions
 
 - `depends_on macos:` takes a bare symbol for the *minimum* release —
-  `depends_on macos: :big_sur`. The `">= :big_sur"` string form is valid but
+  `depends_on macos: :sonoma`. The `">= :sonoma"` string form is valid but
   `brew style` autocorrects it. `maximum_macos:` is the `<=` direction. Match it
   to the app's real `LSMinimumSystemVersion` rather than guessing.
+- A minimum at or below the oldest release Homebrew still supports constrains
+  nothing, and `Homebrew/OSDependsOn` rejects it: write the bare
+  `depends_on :macos` instead. That floor is `MacOSVersion::SYMBOLS.min` — Big
+  Sur as of Homebrew 7.0 — and it rises as Homebrew drops releases, so a bump
+  can turn a once-valid minimum into an offense.
 - Menu bar agents need `uninstall quit: "<bundle-id>"`, or the running process
   survives `brew uninstall` and races the bundle removal.
 - Prefer `caveats` over `postflight` for permission setup. A `postflight` that
