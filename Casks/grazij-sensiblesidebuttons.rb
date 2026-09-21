@@ -16,7 +16,7 @@ cask "grazij-sensiblesidebuttons" do
   end
 
   auto_updates false
-  depends_on macos: :big_sur
+  depends_on :macos
 
   app "SensibleSideButtons.app"
 
